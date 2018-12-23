@@ -1,32 +1,40 @@
-#include <stdio.h>
 #pragma warning(disable:4996)
-#define Maxsize 1000
+#include <stdio.h>
+#include <stdlib.h>
+#define Maxsize 100
 int main()
 {
-    int a=0,b=0;
-	int n=1;
-	int F[Maxsize];
-	int s= 0;
-	F[1] = 1;
-	F[2] = 1;
-	while(scanf("%d %d %d",&a,&b,&n)&&(a||b||n)){
-		if (n <= 2) {
-			printf("1\n");
-			continue;
+	int T = 0, n = 0, m = 0;
+	int arr[Maxsize] = { 0 };
+	int arr2[Maxsize] = { 0 };
+	int l[Maxsize] = { 0 }, r[Maxsize] = { 0 }, d[Maxsize] = { 0 };
+	scanf("%d", &T);
+	for (int i = 0; i < T; i++)
+	{
+		int b = 0;
+		scanf("%d%d", &n, &m);
+		for (int j = 0; j < n; j++)
+			scanf("%d", &arr[j]);
+		for (int k = 0; k < m; k++)
+			scanf("%d%d%d", &l[k], &r[k], &d[k]);
+		for (int k = 0; k < m; k++)
+		{
+			int t = 1;
+			for (int a = l[k]-1; a <= r[k]-1; a++)
+				t = t * arr[a];
+			if (t%d[k] == 0)
+				arr2[k] = 1;
+			else
+				arr2[k] = 0;
+			b++;
 		}
-		a = a % 7;
-		b %= 7;
-		F[3] = (a*F[2] + b * F[1]) % 7;
-		F[4] = (a*F[3] + b * F[2]) % 7;
-		for (int i = 5;; i++) {
-			F[i] = (a*F[i - 1] + b * F[i - 2])%7;
-			if (F[i] == F[4] && F[i - 1] == F[3]) {
-				s = i - 4;
-				break;
-			}
+		for (int c = 0; c < b; c++)
+		{
+			if (1 == arr2[c])
+				printf("Yes\n");
+			else
+				printf("No\n");
 		}
-		int j = (n - 3) % s + 1;
-		printf("%d\n", F[j + 2]);
 	}
 	system("pause");
 	return 0;
