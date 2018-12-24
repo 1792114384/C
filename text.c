@@ -1,12 +1,17 @@
+#pragma warning(disable:4996)
 #include <stdio.h>
+#include <stdlib.h>
 
-#pragma warning(disable:4996)   //详情请参照我的博客
-int main(void)
+int main()
 {
-	int a;
-	scanf("%d",&a);
-	printf("a=%d\n",a);
-	//system("pause");
+	int ch = 0;
+	while ((ch = getchar()) != EOF)
+	{
+		if (ch >= 'a'&&ch <= 'z')
+			printf("%c", ch - ('a' - 'A'));
+		if (ch >= 'A'&&ch <= 'Z')
+			printf("%c", ch + ('a' - 'A'));
+	}
+	system("pause");
 	return 0;
-	
 }
