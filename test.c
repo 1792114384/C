@@ -1,18 +1,20 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <stdio.h>
-#include <stdlib.h>
+
+int Add(int x, int y)
+{
+	int z = 0;
+	z = x + y;
+	return z;
+}
 
 int main()
 {
-	int n = 9;
-	float *pFloat = (float *)&n;
-	printf("n = %d\n", n);
-	printf("*pFloat = %f\n", *pFloat);
-
-	*pFloat = 9.0;
-	printf("n = %d\n", n);
-	printf("*pFloat = %f\n", *pFloat);
+	int a = 10;
+	int b = 20;
+	int ret = Add(a, b);
+	printf("%d\n", ret);
 	system("pause");
 	return 0;
 }
