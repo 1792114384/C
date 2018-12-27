@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-
 #include <stdio.h>
 
 int Add(int x, int y)
@@ -15,6 +13,5 @@ int main()
 	int b = 20;
 	int ret = Add(a, b);
 	printf("%d\n", ret);
-	system("pause");
 	return 0;
 }
