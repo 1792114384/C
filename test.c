@@ -1,145 +1,84 @@
-#define _CRT_SECURE_NO_WARNINGS 
+#define _CRT_SECURE_NO_WARNINGS 1
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <ctype.h>
 
-//int find_one(int *str, int sz)
-//{
-//	int ret = 0;
-//	for (int i = 0; i < sz; i++)
-//	{
-//		ret ^= *(str + i);
-//	}
-//	return ret;
-//}
+//模拟实现atoi
+//
 
-void find_two(int *str, int sz, int *px, int *py)
+enum State
 {
-	int ret = 0;
-	int pos = 0;
-	for (int i = 0; i < sz; i++)
+	VALID,
+	INVALID
+};
+
+enum State state = INVALID;//判断返回值的合法性的状态
+
+int my_atoi(const char* str)
+{
+	int flag = 1;
+	long long ret = 0;
+	//1. str为空指针
+	assert(str != NULL);
+	//2. 空字符串
+	if (*str == '\0')
 	{
-		ret ^= *(str + i);
+		return 0;
 	}
-	for (int i = 0; i < 32; i++)
+	//3. 空白字符
+	while (isspace(*str))
 	{
-		if (((ret >> i) & 1) == 1)
-		{
-			pos = i;
-			break;
-		}
+		str++;
 	}
-	for (int i = 0; i < sz; i++)
+	//4. 正负数问题
+	if (*str == '-')
 	{
-		if (((*(str + i) >> pos) & 1) == 1)
+		flag = -1;
+		str++;
+	}
+	else if (*str == '+')
+	{
+		str++;
+	}
+
+	while (*str)
+	{
+		if (isdigit(*str))
 		{
-			*px ^= *(str + i);
+			ret = ret * 10 + (*str - '0')*flag;
+			//6. 正负溢出问题
+			if (ret >INT_MAX || ret<INT_MIN)
+			{
+				return 0;
+			}
 		}
 		else
 		{
-			*py ^= *(str + i);
+			//5. 字符串中的非数字字符
+			state = VALID;
+			return (int)ret;
 		}
+		str++;
 	}
+	state = VALID;
+	return (int)ret;
 }
-
-int lastBitOf1(int num)
-{
-	return num & ~(num - 1);
-}
-
-void find_three(int *str, int sz, int *px, int *py, int *pz)
-{
-	int ret = 0;
-	int pos = 0;
-	int arr1[12];
-	int flag = 0;
-	for (int i = 0; i < sz; i++)
-	{
-		ret ^= *(str + i);
-		arr1[i] = *(str + i);
-	}
-	for (int i = 0; i < sz; i++) 
-	{
-		flag ^= lastBitOf1(ret ^ *(str + i));
-	}
-	for (int i = 0; i < sz; i++) {
-		if (lastBitOf1(*(str + i) ^ ret) == flag)
-			*px ^= *(str + i);
-	}
-	arr1[sz] = *px;
-	ret ^= *px;
-	for (int i = 0; i < 32; i++)
-	{
-		if (((ret >> i) & 1) == 1)
-		{
-			pos = i;
-			break;
-		}
-	}
-	for (int i = 0; i < sz + 1; i++)
-	{
-		if (((arr1[i] >> pos) & 1) == 1)
-		{
-			*py ^= arr1[i];
-		}
-		else
-		{
-			*pz ^= arr1[i];
-		}
-	}
-}
-
 int main()
 {
-	int arr[] = { 1,2,5,3,101,10,5,3,2,1,9 };
-	int sz = sizeof(arr) / sizeof(arr[0]);
-	int num1 = 0;
-	int num2 = 0;
-	int num3 = 0;
-	find_three(arr, sz, &num1, &num2, &num3);
-	printf("%d %d %d\n", num1, num2, num3);
+	char *p = "	  -000000";
+	int ret = my_atoi(p);
+	if (state == VALID)
+		printf("%d\n", ret);
 	system("pause");
 	return 0;
 }
 
-//int int_cmp(const void*p1, const void*p2)
-//{
-//	return (*(int *)p1 > *(int *)p2);
-//}
-//
-//void swap(char *p1, char *p2, int size)
-//{
-//	for (int i = 0; i < size; i++)
-//	{
-//		char tmp = *(p1 + i);
-//		*(p1 + i) = *(p2+ i);
-//		*(p2+ i) = tmp;
-//	}
-//}
-//
-//void bubble_sort(void *base, int count, int size, int(*cmp)(void *, void *))
-//{
-//	for (int i = 0; i < count - 1; i++)
-//	{
-//		for (int j = 0; j < count - 1 - i; j++)
-//		{
-//			if (cmp((char *)base + j * size, (char *)base + (j + 1) * size) > 0)
-//			{
-//				swap((char *)base + j * size, (char *)base + (j + 1) * size, size);
-//			}
-//		}
-//	}
-//}
-//
-//int main()
-//{
-//	int arr[] = { 10,9,8,7,6,5,4,3,2,1 };
-//	int sz = sizeof(arr) / sizeof(arr[0]);
-//	bubble_sort(arr, sz, sizeof(arr[0]), int_cmp);
-//	for (int i = 0; i < sz; i++)
-//	{
-//		printf("%d ", arr[i]);
-//	}
-//	system("pause");
-//	return 0;
-//}
+
+
+
+
+
+
